@@ -1,23 +1,19 @@
-import './App.css';
+import "./App.css";
+import React, { useState } from 'react';
+import Navbar from "./components/Navbar";
+import Home from "./Pages/Home"
 
 function App() {
-  return (
-    <div className="App">
-      {/* NAV BAR */}
-      Crypto-Go
-      
-      
-      
-      <header className="App-header">
-         HELLO WORLD!!
 
-         <div>hello</div>
-      </header>
-      
-      
-      
-      {/* FOOTER */}
-      HELLO WORLD
+
+  
+
+  return (
+    <div className="App-Style bg-slate-400" >
+
+<Navbar/>
+
+      <Home/>
 
 
     </div>
