@@ -6,9 +6,9 @@ function Navbar() {
     <div class="bg-slate-400 text-white border-2 border-black" >
       <div class="float-left">Crypto-Go</div>
       <div class="float-right">
-        <div class="float-left">light</div>
+        <div class="float-left">Light</div>
         <Slider />
-        <div class="float-right">dark</div>
+        <div class="float-right">Dark</div>
       </div>
     </div>
   );
