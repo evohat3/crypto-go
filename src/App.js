@@ -8,7 +8,7 @@ function App() {
   
 
   return (
-    <div className="App-Style bg-slate-400" >
+    <div className="App-Style bg-black" >
 
 <Navbar/>
 
