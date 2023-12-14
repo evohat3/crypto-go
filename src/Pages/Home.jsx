@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "../App.css";
-
 function Home() {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,9 +46,10 @@ function Home() {
     return <div>Error: {error.message}</div>;
   }
   return (
-    <div className="m-4 p-4">
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-4 p-4 pill">
+    <div className="p-8 bg-black">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-4 p-4">
       {coins.map((coin) => (
+        
         <div
           key={coin.uuid}
           className={`border-4 p-2 sm:p-1 md:p-2 rounded-full hover:bg-slate-400`}
@@ -67,15 +66,16 @@ function Home() {
                   : "text-green-500 hover:bg-green-500 hover:text-black hover:border-b-4 border-black"
               } text-lg`}
             >
-              {coin.symbol}{" "}
+              {coin.symbol}{}
               <span className="float-right">Change {coin.change}%</span>
             </span>
             <span className="block p-4 text-center ">
               Price: ${Number(coin.price).toLocaleString()}
+
             </span>
           </div>
         </div>
-      ))}
+      )) }, {console.log('coins', coins)}
     </div>
     </div>
   );
