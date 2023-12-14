@@ -27,6 +27,7 @@ function Home() {
         const result = await response.json();
         console.log(result)
         const coinData = result.data.coins || [];
+        
 
         setCoins(coinData);
         setLoading(false);
@@ -46,16 +47,18 @@ function Home() {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
   return (
-    <ul className='flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-col'>
+    <ul className='flex flex-col sm:flex-row md:flex-col lg:flex-col xl:flex-col m-4 p-4'>
       {coins.map((coin) => (
-        <li className='container border-4 p-2 mb-2 sm:p-1 sm:mb-1 md:p-2 md:mb-2' key={coin.uuid}>
-          <div className={`truncate text-base ${coin.change < 0 ? 'bg-red-500' : 'bg-green-500'}`}>
-          <span className="block">Coin: {coin.symbol}</span>
-          <span className="block">Price: {coin.price}</span>
-          <span className="block">Change {coin.change}%</span>
-
+        <li className='container border-4 bg-black p-2 mb-2 sm:p-1 sm:mb-1 md:p-2 md:mb-2' key={coin.uuid}>
+          <div className={`truncate text-base ${coin.change < 0 ? 'bg-red-500' : 'bg-green-500'} border-4 border-white`}>
+            <div className=''>
+              <span className="block p-4 bg-black text-white">{coin.symbol}  <span className='float-right'>Change {coin.change}%</span> </span>
+              <span className="block p-4">Price: ${coin.price}
+              
+              </span>
+              
+            </div>
           </div>
   
         </li>
