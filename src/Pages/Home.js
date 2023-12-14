@@ -53,8 +53,8 @@ function Home() {
         <li className='container border-4 bg-black p-2 mb-2 sm:p-1 sm:mb-1 md:p-2 md:mb-2' key={coin.uuid}>
           <div className={`truncate text-base ${coin.change < 0 ? 'bg-red-500' : 'bg-green-500'} border-4 border-white`}>
             <div className=''>
-              <span className="block p-4 bg-black text-white">{coin.symbol}  <span className='float-right'>Change {coin.change}%</span> </span>
-              <span className="block p-4">Price: ${coin.price}
+              <span className={`block p-4 bg-black ${coin.change < 0 ? 'text-red-500' : 'text-green-500'}`}>{coin.symbol}  <span className='float-right'>Change {coin.change}%</span> </span>
+              <span className="block p-4">Price: ${(Number(coin.price).toLocaleString())}
               
               </span>
               
