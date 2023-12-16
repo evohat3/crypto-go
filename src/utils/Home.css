@@ -1,0 +1,19 @@
+@keyframes ticker {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .ticker {
+    animation: ticker 20s linear infinite; /* Adjust the duration according to your preference */
+  }
+
+  .flex {
+    display: flex;
+    gap: 1rem; /* Adjust the gap between coins as needed */
+    overflow-x: auto;
+    white-space: nowrap; /* Prevents wrapping to the next line */
+  }

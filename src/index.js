@@ -10,7 +10,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
     <BrowserRouter>
-      <Navbar></Navbar>
+      <Navbar/>
     <Routes>
       <Route index element={<Home/>} />
       <Route path="/:id" element={<Search />}/>

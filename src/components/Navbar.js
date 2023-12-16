@@ -28,7 +28,7 @@ function Navbar() {
   }
 
   return (
-    <div className="text-white h-12 fixed top-0 w-full bg-gray-800 p-4 flex items-center justify-between" onClick={() => handleCGClick()}>
+    <div className="text-white h-12 fixed top-0 w-full bg-gray-800 p-4 flex items-center justify-between z-10" onClick={() => handleCGClick()}>
       <div className="flex-1 ">
         <span className="bg-blue-500 rounded-full p-2 border-2 border-white text-white hover:bg-white hover:text-black">Crypto-Go</span>
         <span className="ml-2">{formattedDay}, {formattedTime}</span>

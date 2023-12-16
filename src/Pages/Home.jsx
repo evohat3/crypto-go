@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import '../utils/Home.css'
 
 function Home() {
   const [coins, setCoins] = useState([]);
@@ -75,7 +76,7 @@ function Home() {
                 } text-lg`}
               >
                 {coin.symbol}
-                <span className="float-right">Change {coin.change}%</span>
+                <span className="float-right">{coin.change}%</span>
               </span>
               <span className="block p-4 text-center ">
                 Price: ${Number(coin.price).toLocaleString()}
