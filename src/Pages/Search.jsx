@@ -1,35 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import 'animate.css';
+import { fetchCoinDetails } from '../utils/Api';
+// import CoinPriceChart from '../components/Chart'
 
 export default function Search() {
   const { id } = useParams(); // Access the symbol from the URL params
   const [coinDetails, setCoinDetails] = useState(null);
+  // const [coinHistory, setCoinHistory] = useState(null)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchCoinDetails = async () => {
+    const fetchData = async () => {
       try {
-        // Replace 'YOUR_API_KEY' with your actual API key
-        const apiKey = process.env.REACT_APP_API_KEY;
-        const url = `https://coinranking1.p.rapidapi.com/coin/${id}`; // Use the individual coin endpoint
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'X-RapidAPI-Key': apiKey,
-            'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com',
-          },
-        });
+        const data = await fetchCoinDetails(id);
+        setCoinDetails(data);
 
-        if (!response.ok) {
-          throw new Error('Failed to fetch coin details');
-        }
-
-        const result = await response.json();
-        const coinData = result.data.coin || {};
-
-        setCoinDetails(coinData);
+        // const coinHistData = await fetchCoinHistory(id);
+        // console.log('coin Hist Data',coinHistData)
+        // setCoinHistory(coinHistData)
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -37,8 +27,9 @@ export default function Search() {
       }
     };
 
-    fetchCoinDetails();
+    fetchData();
   }, [id]);
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -87,9 +78,8 @@ export default function Search() {
 
       {/* Fourth box */}
       <div className='position-relative'>
-
       <div className='text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 w-1/3 fixed right-0 top-0 h-full overflow-y-auto'>
-      <p className='text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl'>Hello</p>
+      {/* <CoinPriceChart coinData={coinHistory} /> */}
     </div>
 
     </div>
