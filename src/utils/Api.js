@@ -51,6 +51,30 @@ const fetchCoinDetails = async (id) => {
       throw error;
     }
   };
+
+  const fetchCoins = async () => {
+    const url = 'https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0';
   
-  export { fetchCoinDetails, fetchCoinHistory };
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': '8ae759da67msh17660d17a33b0aep134bc6jsn4d902f5fbb19',
+        'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+      }
+    };
+  
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json(); // assuming the response is in JSON format
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error; // rethrow the error to handle it elsewhere if needed
+    }
+  };
+
+
+
+  
+  export { fetchCoinDetails, fetchCoinHistory, fetchCoins };
   

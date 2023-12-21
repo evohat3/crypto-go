@@ -110,13 +110,16 @@ const hourLabels = coinHistory.map(entry => {
 
   
  
+// Reverse the arrays
+const reversedHourLabels = [...hourLabels].reverse();
+const reversedDataValues = [...dataValues].reverse();
 
 const data = {
-  labels: hourLabels,
+  labels: reversedHourLabels,
   datasets: [
     {
       label: 'Coin Price History',
-      data: dataValues,
+      data: reversedDataValues,
       backgroundColor: 'white',
       borderColor: coinDetails.change < 0 ? 'red' : 'green',
       pointBorderColor: coinDetails.change < 0 ? 'red' : 'green',
@@ -137,7 +140,7 @@ const options = {
   scales: {
     y: {
       min: Math.min(...dataValues),
-      max: Math.max(...dataValues) + 100, // Adjust the max value based on your data
+      max: Math.max(...dataValues), // Adjust the max value based on your data
     }
   }
 };
