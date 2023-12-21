@@ -98,12 +98,16 @@ export default function Search() {
     return <div>Error: {error.message}</div>;
   }
 
-  const labels = coinHistory.map((entry, index) => ({ value: entry.timestamp, index: index }));
+  const hourLabels = coinHistory.map(entry => {
+    const timestamp = new Date(entry.timestamp);
+    const roundedHour = Math.round(timestamp.getHours());
+    return `${roundedHour}:00`; // Format the label to display the rounded hour
+  });
   const dataValues = coinHistory.map(entry => parseFloat(entry.price.replace('$', '').replace(',', '')));
  
 
 const data = {
-  labels: labels,
+  labels: hourLabels,
   datasets: [
     {
       label: 'Coin Price History',
@@ -117,6 +121,8 @@ const data = {
 }
 
 const options = {
+  responsive: true, // Enable responsiveness
+  maintainAspectRatio: false, // Do not maintain aspect ratio
   plugins: {
     legend: {
       display: true,
@@ -132,53 +138,62 @@ const options = {
 };
 
 
-  return (
-    <div className="bg-black h-screen flex flex-col p-4">
-      <div className="flex flex-col">
-        {/* First Box */}
-        <div className="mt-16 ">
-          <div
-            className={`text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 rounded-full w-1/2 items-center justify-center m-4 p-4 animate__animated animate__backInLeft ${
-              coinDetails.change < 0 ? "bg-red-500" : "bg-green-500"
-            }`}
-          >
-            <img
-              src={coinDetails.iconUrl}
-              alt={`${coinDetails.name} icon`}
-              className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-24 xl:h-24 float-right border-4 bg-white"
-            />
-            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold ">
-              {coinDetails.name}
-            </h2>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl animate__rubberBand">
-              Symbol: {coinDetails.symbol}
-            </p>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-              Current Price: ${Number(coinDetails.price).toLocaleString()}
-            </p>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-              Change in price: {coinDetails.change}%
-            </p>
-            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-              All Time High: $
-              {Number(coinDetails.allTimeHigh.price).toLocaleString()}
-            </p>
-          </div>
-        </div>
+return (
+  <div className="bg-black h-screen flex flex-col">
+    
+    {/* Chart box */}
+    <div className="position-relative ">
+      <div className="text-white border-4 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 w-full overflow-y-auto">
+        {coinHistory && (
+          <Line
+            data={data}
+            options={options}
+          />
+        )}
+      </div>
+    
+    </div>
 
-        {/* Second Box */}
-        <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 rounded-full w-1/2 whitespace-normal text-center animate__animated animate__backInLeft">
+    {/* Boxes container */}
+    <div className="flex justify-center mt-6 space-x-4">
+
+      {/* First Box */}
+      <div className="w-full">
+        <div
+          className={`text-white border-4  sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full h-full items-center justify-centeranimate__animated animate__backInLeft ${
+            coinDetails.change < 0 ? "bg-red-500" : "bg-green-500"
+          }`}
+        >
+          <img
+            src={coinDetails.iconUrl}
+            alt={`${coinDetails.name} icon`}
+            className="sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-24 xl:h-24 border-4 bg-white rounded-full"
+          />
+          <h2 className="text-base sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold ">
+            {coinDetails.name}
+          </h2>
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl animate__rubberBand">
+            Symbol: {coinDetails.symbol}
+          </p>
           <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-            {coinDetails.description}
+            Current Price: ${Number(coinDetails.price).toLocaleString()}
+          </p>
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+            Change in price: {coinDetails.change}%
+          </p>
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+            All Time High: ${Number(coinDetails.allTimeHigh.price).toLocaleString()}
           </p>
         </div>
+      </div>
 
-        {/* Third Box */}
-
-        <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 rounded-full w-1/2 whitespace-normal text-center animate__animated animate__backInLeft">
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-center whitespace-normal">
-            Website Url
-          </p>
+      {/* Second Box */}
+      <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 w-1/2 whitespace-normal text-center animate__animated animate__backInLeft">
+        <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+          {coinDetails.description}
+        </p>
+        <div className="border-4 hover:bg-white hover:text-black" onClick={() => window.location.href = coinDetails.websiteUrl}>
+          <p className="p-4 ">More Information at:</p>
           <a
             className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-center underline text-blue-400 hover:text-blue-600 hover:underline whitespace-normal"
             href={coinDetails.websiteUrl}
@@ -187,18 +202,8 @@ const options = {
           </a>
         </div>
       </div>
-
-      {/* Fourth box */}
-      <div className="position-relative">
-        <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 w-1/3 fixed right-0 top-0 h-full overflow-y-auto">
-        {coinHistory && (
-          <Line
-            data={data}
-            options={options}
-          />
-        )}
-        </div>
-      </div>
     </div>
-  );
+  </div>
+);
+
 }
