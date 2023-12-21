@@ -61,22 +61,25 @@ function Navbar() {
         </span>
       </div>
 
-      {/* Scrolling stock ticker container */}
-      <div className="flex-1 flex items-center justify-center">
-        <Marquee>
-          {tickerData.map((coin) => (
-            <span
-              key={coin.id}
-              className={`ticker-item ${
-                coin.change < 0 ? "text-red-500" : "text-green-500"
-              }`}
-            >
-              {coin.symbol} $
-              {parseFloat(coin.price).toFixed(2)}&nbsp;&nbsp;&nbsp;
-            </span>
-          ))}
-        </Marquee>
-      </div>
+{/* Scrolling stock ticker container */}
+<div className="flex-1 flex items-center justify-center">
+  <Marquee>
+    {tickerData.map((coin) => (
+      <span
+        key={coin.id}
+        className={`ticker-item ${
+          coin.change < 0 ? "text-red-500" : "text-green-500"
+        }`}
+      >
+        &nbsp;{coin.symbol}&nbsp;$
+        {parseFloat(coin.price).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}&nbsp;&nbsp;&nbsp;&nbsp;
+      </span>
+    ))}
+  </Marquee>
+</div>
 
       <div className="flex items-center">
         <div className="mr-2">Light</div>
