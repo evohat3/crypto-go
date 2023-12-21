@@ -122,7 +122,7 @@ const data = {
       data: reversedDataValues,
       backgroundColor: 'white',
       borderColor: coinDetails.change < 0 ? 'red' : 'green',
-      pointBorderColor: coinDetails.change < 0 ? 'red' : 'green',
+      pointBorderColor: 'black',
       fill: true,
     }
   ]
@@ -140,7 +140,7 @@ const options = {
   scales: {
     y: {
       min: Math.min(...dataValues),
-      max: Math.max(...dataValues), // Adjust the max value based on your data
+      max: Math.max(...dataValues), 
     }
   }
 };
@@ -169,39 +169,43 @@ return (
       {/* First Box */}
       <div className="w-full">
         <div
-          className={`text-white border-4  sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full h-full items-center justify-center animate__animated animate__backInRight ${
+          className={`text-white border-4  sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full items-center justify-center animate__animated animate__backInRight ${
             coinDetails.change < 0 ? "bg-red-500" : "bg-green-500"
           }`}
         >
           <img
             src={coinDetails.iconUrl}
             alt={`${coinDetails.name} icon`}
-            className="sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-24 xl:h-24 border-4 bg-white rounded-full"
+            className="sm:w-6 sm:h-6 md:w-12 md:h-12 lg:w-16 lg:h-16 xl:w-20 xl:h-20 border-4 bg-white rounded-full"
           />
-          <h2 className="text-base sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold ">
+          <h2 className="text-base sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold bg-black rounded-full p-2 m-2">
             {coinDetails.name}
           </h2>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl animate__rubberBand">
-            Symbol: {coinDetails.symbol}
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2">
+             <span className="font-bold">Symbol:</span> {coinDetails.symbol}
           </p>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-            Current Price: ${Number(coinDetails.price).toLocaleString()}
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2">
+          <span className="font-bold">Current Price:</span> ${Number(coinDetails.price).toLocaleString()}
           </p>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-            Change in price: {coinDetails.change}%
+        <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2 ${
+            coinDetails.change < 0 ? "text-red-500" : "text-green-500"
+          }`}>
+          <span className="font-bold">Change:</span> {" "}
+  {coinDetails.change > 0 ? "+" : ""}{coinDetails.change}%
           </p>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-            All Time High: ${Number(coinDetails.allTimeHigh.price).toLocaleString()}
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2">
+          <span className="font-bold">All Time High:</span> ${Number(coinDetails.allTimeHigh.price).toLocaleString()}
           </p>
         </div>
       </div>
 
       {/* Second Box */}
-      <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 w-1/2 whitespace-normal text-center animate__animated animate__backInLeft">
+      <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 whitespace-normal text-center  animate__animated animate__backInLeft" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
           {coinDetails.description}
         </p>
-        <div className="border-4 hover:bg-white hover:text-black" onClick={() => window.location.href = coinDetails.websiteUrl}>
+        {/* box inside second box*/}
+        <div className="border-4 hover:bg-white hover:text-black p-4 m-4 w-1/2border-4 hover:bg-white hover:text-black p-4 m-4 w-1/2" onClick={() => window.location.href = coinDetails.websiteUrl} >
           <p className="p-4 ">More Information at:</p>
           <a
             className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-center underline text-blue-400 hover:text-blue-600 hover:underline whitespace-normal"

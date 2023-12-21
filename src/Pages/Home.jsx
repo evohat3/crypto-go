@@ -60,7 +60,7 @@ function Home() {
         {coins.map((coin) => (
           <div
             key={coin.uuid}
-            className={`border-4 p-2 sm:p-1 md:p-2 rounded-full hover:bg-slate-400`}
+            className={`border-4 p-2 sm:p-1 md:p-2 rounded-full hover:bg-yellow-400`}
             onClick={() => handleCoinClick(coin.uuid)}
           >
             <div
@@ -75,10 +75,10 @@ function Home() {
                     : "text-green-500 hover:bg-green-500 hover:text-black hover:border-b-4 border-black"
                 } text-lg`}
               >
-                {coin.symbol}
-                <span className="float-right">{coin.change}%</span>
+                <span className="font-bold">{coin.symbol}</span>
+                <span className="float-right font-bold">{coin.change}%</span>
               </span>
-              <span className="block p-4 text-center ">
+              <span className="block p-4 text-center font-bold">
                 Price: ${Number(coin.price).toLocaleString()}
               </span>
             </div>
