@@ -148,18 +148,19 @@ const options = {
 
 return (
   <div className="bg-black h-screen flex flex-col">
-    
+    <div className="w-1/2 h-1/2">
     {/* Chart box */}
-    <div className="position-relative ">
-      <div className="text-white border-4 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-white w-full overflow-y-auto">
-        {coinHistory && (
-          <Line
-            data={data}
-            options={options}
-          />
-        )}
-      </div>
-    
+    <div className="position-relative">
+  <div className="text-white border-4 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-white w-full h overflow-y-auto" style={{ height: "50vh", width: "100vw" }}>
+    {coinHistory && (
+      <Line
+        data={data}
+        options={options}
+      />
+    )}
+  </div>
+</div>
+
     </div>
 
     {/* Boxes container */}
@@ -168,7 +169,7 @@ return (
       {/* First Box */}
       <div className="w-full">
         <div
-          className={`text-white border-4  sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full h-full items-center justify-centeranimate__animated animate__backInLeft ${
+          className={`text-white border-4  sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full h-full items-center justify-center animate__animated animate__backInRight ${
             coinDetails.change < 0 ? "bg-red-500" : "bg-green-500"
           }`}
         >

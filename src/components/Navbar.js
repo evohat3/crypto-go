@@ -46,7 +46,7 @@ function Navbar() {
     fetchData();
   }, []);
 
-  console.log(tickerData);
+  // console.log(tickerData);
   return (
     <div className="text-white h-12 fixed top-0 w-full bg-gray-800 p-4 flex items-center justify-between z-10">
       <div className="flex-1">
@@ -71,7 +71,7 @@ function Navbar() {
                 coin.change < 0 ? "text-red-500" : "text-green-500"
               }`}
             >
-              {coin.symbol}&nbsp;&nbsp;&nbsp;$
+              {coin.symbol} $
               {parseFloat(coin.price).toFixed(2)}&nbsp;&nbsp;&nbsp;
             </span>
           ))}
