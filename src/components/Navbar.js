@@ -62,7 +62,7 @@ function Navbar() {
       </div>
 
 {/* Scrolling stock ticker container */}
-<div className="flex-1 flex items-center justify-center">
+<div className="flex-1 flex items-center justify-center font-bold">
   <Marquee>
     {tickerData.map((coin) => (
       <span

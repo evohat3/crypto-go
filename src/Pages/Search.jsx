@@ -176,7 +176,7 @@ return (
           <img
             src={coinDetails.iconUrl}
             alt={`${coinDetails.name} icon`}
-            className="sm:w-6 sm:h-6 md:w-12 md:h-12 lg:w-16 lg:h-16 xl:w-20 xl:h-20 border-4 bg-white rounded-full"
+            className="sm:w-6 sm:h-6 md:w-12 md:h-12 lg:w-16 lg:h-16 xl:w-20 xl:h-20 border-4 bg-white rounded-full "
           />
           <h2 className="text-base sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold bg-black rounded-full p-2 m-2">
             {coinDetails.name}
