@@ -1,15 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import 'animate.css';
-import { fetchCoinDetails } from '../utils/Api';
-// import CoinPriceChart from '../components/Chart'
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import "animate.css";
+import { fetchCoinDetails, fetchCoinHistory } from "../utils/Api";
+import { Line } from 'react-chartjs-2'
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale, // x axis
+  LinearScale, // y axis
+  PointElement
+} from 'chart.js'
+
+ChartJS.register(  
+  LineElement,
+  CategoryScale, 
+  LinearScale, 
+  PointElement
+  )
+
 
 export default function Search() {
   const { id } = useParams(); // Access the symbol from the URL params
   const [coinDetails, setCoinDetails] = useState(null);
-  // const [coinHistory, setCoinHistory] = useState(null)
+  const [coinHistory, setCoinHistory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
+
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,9 +38,48 @@ export default function Search() {
         const data = await fetchCoinDetails(id);
         setCoinDetails(data);
 
-        // const coinHistData = await fetchCoinHistory(id);
-        // console.log('coin Hist Data',coinHistData)
-        // setCoinHistory(coinHistData)
+        const coinHistData = await fetchCoinHistory(id);
+        // console.log('coin Hist Data',coinHistData[0])
+
+        const formattedData = coinHistData.map((entry) => {
+          const price = Number(entry.price).toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+          });
+
+          // Convert timestamp to Date object
+          const date = new Date(entry.timestamp * 1000);
+
+          // Round down to the nearest hour
+          date.setMinutes(0, 0, 0);
+
+          const timestamp = new Date(entry.timestamp * 1000).toLocaleString(
+            "en-US",
+            { timeZone: "America/New_York" }
+          );
+
+          return {
+            price,
+            timestamp,
+          };
+        });
+
+
+
+       // Filter data to include only one timestamp per hour
+       const hourlyData = formattedData.filter((entry, index, array) => {
+        const currentHour = new Date(entry.timestamp).getHours();
+        const previousHour =
+          index > 0 ? new Date(array[index - 1].timestamp).getHours() : -1;
+
+        return currentHour !== previousHour;
+      });
+
+
+
+        
+
+        setCoinHistory(hourlyData);
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -30,7 +90,6 @@ export default function Search() {
     fetchData();
   }, [id]);
 
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -39,51 +98,107 @@ export default function Search() {
     return <div>Error: {error.message}</div>;
   }
 
+  const labels = coinHistory.map((entry, index) => ({ value: entry.timestamp, index: index }));
+  const dataValues = coinHistory.map(entry => parseFloat(entry.price.replace('$', '').replace(',', '')));
+ 
+
+const data = {
+  labels: labels,
+  datasets: [
+    {
+      label: 'Coin Price History',
+      data: dataValues,
+      backgroundColor: 'white',
+      borderColor: coinDetails.change < 0 ? 'red' : 'green',
+      pointBorderColor: coinDetails.change < 0 ? 'red' : 'green',
+      fill: true,
+    }
+  ]
+}
+
+const options = {
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    }
+  },
+  scales: {
+    y: {
+      min: Math.min(...dataValues),
+      max: Math.max(...dataValues) + 100, // Adjust the max value based on your data
+    }
+  }
+};
+
+
   return (
-    <div className='bg-black h-screen flex flex-col p-4'>
+    <div className="bg-black h-screen flex flex-col p-4">
+      <div className="flex flex-col">
+        {/* First Box */}
+        <div className="mt-16 ">
+          <div
+            className={`text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 rounded-full w-1/2 items-center justify-center m-4 p-4 animate__animated animate__backInLeft ${
+              coinDetails.change < 0 ? "bg-red-500" : "bg-green-500"
+            }`}
+          >
+            <img
+              src={coinDetails.iconUrl}
+              alt={`${coinDetails.name} icon`}
+              className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-24 xl:h-24 float-right border-4 bg-white"
+            />
+            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold ">
+              {coinDetails.name}
+            </h2>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl animate__rubberBand">
+              Symbol: {coinDetails.symbol}
+            </p>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+              Current Price: ${Number(coinDetails.price).toLocaleString()}
+            </p>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+              Change in price: {coinDetails.change}%
+            </p>
+            <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+              All Time High: $
+              {Number(coinDetails.allTimeHigh.price).toLocaleString()}
+            </p>
+          </div>
+        </div>
 
+        {/* Second Box */}
+        <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 rounded-full w-1/2 whitespace-normal text-center animate__animated animate__backInLeft">
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
+            {coinDetails.description}
+          </p>
+        </div>
 
-      <div className='flex flex-col'>
-      {/* First Box */}
-      <div className='mt-16 '>
-        <div className={`text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 rounded-full w-1/2 items-center justify-center m-4 p-4 animate__animated animate__backInLeft ${coinDetails.change < 0 ? 'bg-red-500' : 'bg-green-500'}`}>
-          <img
-            src={coinDetails.iconUrl}
-            alt={`${coinDetails.name} icon`}
-            className='w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 xl:w-24 xl:h-24 float-right border-4 bg-white'
-          />
-          <h2 className='text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold '>{coinDetails.name}</h2>
-          <p className='text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl animate__rubberBand'>Symbol: {coinDetails.symbol}</p>
-          <p className='text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl'>Current Price: ${Number(coinDetails.price).toLocaleString()}</p>
-          <p className='text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl'>Change in price: {coinDetails.change}%</p> 
-          <p className='text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl'>All Time High: ${Number(coinDetails.allTimeHigh.price).toLocaleString()}</p>
+        {/* Third Box */}
+
+        <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 rounded-full w-1/2 whitespace-normal text-center animate__animated animate__backInLeft">
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-center whitespace-normal">
+            Website Url
+          </p>
+          <a
+            className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-center underline text-blue-400 hover:text-blue-600 hover:underline whitespace-normal"
+            href={coinDetails.websiteUrl}
+          >
+            {coinDetails.websiteUrl}
+          </a>
         </div>
       </div>
 
-      {/* Second Box */}
-      <div className='text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 rounded-full w-1/2 whitespace-normal text-center animate__animated animate__backInLeft'>
-        <p className='text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl'>{coinDetails.description}</p>
-        
-        
-      </div>
-
-      {/* Third Box */}
-
-      <div className='text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 rounded-full w-1/2 whitespace-normal text-center animate__animated animate__backInLeft'>
-      <p className='text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-center whitespace-normal'>Website Url</p>
-        <a className='text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-center underline text-blue-400 hover:text-blue-600 hover:underline whitespace-normal' href={coinDetails.websiteUrl}>{coinDetails.websiteUrl}</a>
-      </div>
-
-      </div>
-
       {/* Fourth box */}
-      <div className='position-relative'>
-      <div className='text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 w-1/3 fixed right-0 top-0 h-full overflow-y-auto'>
-      {/* <CoinPriceChart coinData={coinHistory} /> */}
-    </div>
-
-    </div>
-
+      <div className="position-relative">
+        <div className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 m-4 p-4 w-1/3 fixed right-0 top-0 h-full overflow-y-auto">
+        {coinHistory && (
+          <Line
+            data={data}
+            options={options}
+          />
+        )}
+        </div>
+      </div>
     </div>
   );
 }
