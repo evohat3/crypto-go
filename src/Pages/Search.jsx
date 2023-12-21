@@ -98,12 +98,17 @@ export default function Search() {
     return <div>Error: {error.message}</div>;
   }
 
-  const hourLabels = coinHistory.map(entry => {
-    const timestamp = new Date(entry.timestamp);
-    const roundedHour = Math.round(timestamp.getHours());
-    return `${roundedHour}:00`; // Format the label to display the rounded hour
-  });
+const hourLabels = coinHistory.map(entry => {
+  const timestamp = new Date(entry.timestamp);
+  const options = { hour: 'numeric', hour12: true };
+  const formattedHour = new Intl.DateTimeFormat('en-US', options).format(timestamp);
+
+  return formattedHour;
+});
+
   const dataValues = coinHistory.map(entry => parseFloat(entry.price.replace('$', '').replace(',', '')));
+
+  
  
 
 const data = {
@@ -143,7 +148,7 @@ return (
     
     {/* Chart box */}
     <div className="position-relative ">
-      <div className="text-white border-4 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 w-full overflow-y-auto">
+      <div className="text-white border-4 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-white w-full overflow-y-auto">
         {coinHistory && (
           <Line
             data={data}
