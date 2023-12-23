@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../utils/Home.css'
+import { useTheme } from "../utils/ThemeContext";
 
 function Home() {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { isDarkMode } = useTheme();
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,18 +58,18 @@ function Home() {
   }
 
   return (
-    <div className="p-8 bg-black">
+    <div className={`p-8 bg-black ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 m-4 p-4">
         {coins.map((coin) => (
           <div
             key={coin.uuid}
-            className={`border-4 p-2 sm:p-1 md:p-2 rounded-full hover:bg-yellow-400`}
+            className={`border-4 p-2 sm:p-1 md:p-2 rounded-full hover:bg-yellow-400 ${isDarkMode ? 'border-white' : 'border-black'}`}
             onClick={() => handleCoinClick(coin.uuid)}
           >
             <div
               className={`truncate text-base ${
                 coin.change < 0 ? "bg-red-500" : "bg-green-500"
-              } border-4 border-white rounded-full`}
+              } border-4 ${isDarkMode ? 'border-white' : 'border-black'} rounded-full`}
             >
               <span
                 className={`block p-4 bg-black text-center ${

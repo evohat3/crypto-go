@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "animate.css";
 import { fetchCoinDetails, fetchCoinHistory } from "../utils/Api";
+import { useTheme } from "../utils/ThemeContext";
 import { Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
@@ -25,10 +26,7 @@ export default function Search() {
   const [coinHistory, setCoinHistory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-
-
-
+  const { isDarkMode } = useTheme();
 
 
 
@@ -120,7 +118,7 @@ const data = {
     {
       label: 'Coin Price History',
       data: reversedDataValues,
-      backgroundColor: 'white',
+      backgroundColor: isDarkMode ? 'white' : 'black',
       borderColor: coinDetails.change < 0 ? 'red' : 'green',
       pointBorderColor: 'black',
       fill: true,
@@ -138,20 +136,54 @@ const options = {
     }
   },
   scales: {
+    x: {
+      title: {
+        display: true,
+        text: 'Time',
+        color: isDarkMode ? 'white' : 'black', // X-axis title color
+        font: {
+          size: 14,
+          weight: 'bold',
+        },
+      },
+      ticks: {
+        color: isDarkMode ? 'white' : 'black', // X-axis tick color
+        font: {
+          size: 12,
+        },
+      },
+    },
     y: {
       min: Math.min(...dataValues),
       max: Math.max(...dataValues), 
+      title: {
+        display: true,
+        text: 'Price',
+        color: isDarkMode ? 'white' : 'black', // Y-axis title color
+        font: {
+          size: 14,
+          weight: 'bold',
+        },
+      },
+      ticks: {
+        color: isDarkMode ? 'white' : 'black', // Y-axis tick color
+        font: {
+          size: 12,
+          weight: 'bold',
+        },
+        callback: (value, index, values) => `$${value.toLocaleString()}`
+      },
     }
   }
 };
 
 
 return (
-  <div className="bg-black h-screen flex flex-col">
+  <div className={`h-screen flex flex-col ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
     <div className="w-1/2 h-1/2">
     {/* Chart box */}
     <div className="position-relative">
-  <div className="text-white border-4 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-white w-full h overflow-y-auto" style={{ height: "50vh", width: "100vw" }}>
+  <div className={` sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full overflow-y-auto border-b-4 ${isDarkMode ? 'border-white' : 'border-black'}`} style={{ height: "50vh", width: "100vw" }}>
     {coinHistory && (
       <Line
         data={data}
@@ -164,24 +196,24 @@ return (
     </div>
 
     {/* Boxes container */}
-    <div className="flex justify-center mt-6 space-x-4">
+    <div className="flex justify-center mt-1 mr-4 ml-4 space-x-1">
 
       {/* First Box */}
       <div className="w-full">
         <div
-          className={`text-white border-4  sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full items-center justify-center animate__animated animate__backInRight ${
+          className={`text-white border-4 sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full items-center justify-center animate__animated animate__backInRight ${
             coinDetails.change < 0 ? "bg-red-500" : "bg-green-500"
-          }`}
+          } ${isDarkMode ? 'border-white  text-white' : 'border-black text-black'}`}
         >
           <img
             src={coinDetails.iconUrl}
             alt={`${coinDetails.name} icon`}
-            className="sm:w-6 sm:h-6 md:w-12 md:h-12 lg:w-16 lg:h-16 xl:w-20 xl:h-20 border-4 bg-white rounded-full "
+            className={`sm:w-6 sm:h-6 md:w-12 md:h-12 lg:w-16 lg:h-16 xl:w-20 xl:h-20 border-4 rounded-full ${isDarkMode ? 'bg-white' : 'bg-black border-black'}`}
           />
-          <h2 className="text-base sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold bg-black rounded-full p-2 m-2">
+          <h2 className={`text-base p-4 sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold rounded-full p-2 m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'}`}>
             {coinDetails.name}
           </h2>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2">
+          <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'}`}>
              <span className="font-bold">Symbol:</span> {coinDetails.symbol}
           </p>
           <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2">
@@ -190,7 +222,7 @@ return (
         <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2 ${
             coinDetails.change < 0 ? "text-red-500" : "text-green-500"
           }`}>
-          <span className="font-bold">Change:</span> {" "}
+          <span className="font-bold text">Change:</span> {" "}
   {coinDetails.change > 0 ? "+" : ""}{coinDetails.change}%
           </p>
           <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2">

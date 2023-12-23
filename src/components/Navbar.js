@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Marquee from "react-fast-marquee"; // Import the marquee library or use your preferred solution
 import { fetchCoins } from "../utils/Api";
+import { useTheme } from '../utils/ThemeContext';
 
 function Navbar() {
+  const { isDarkMode } = useTheme();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [tickerData, setTickerData] = useState([]);
   const navigate = useNavigate();
@@ -48,15 +50,15 @@ function Navbar() {
 
   // console.log(tickerData);
   return (
-    <div className="text-white h-12 fixed top-0 w-full bg-gray-800 p-4 flex items-center justify-between z-10">
+    <div className={`text-white h-12 fixed top-0 w-full p-4 flex items-center justify-between z-10 ${isDarkMode ? 'bg-gray-800' : 'bg-white border-b-black border-2'}`} >
       <div className="flex-1">
         <span
-          className="bg-blue-500 rounded-full p-2 border-2 border-white text-white hover:bg-white hover:text-black"
+          className={`bg-blue-500 rounded-full p-2 border-2 border-white text-white ${isDarkMode ? 'hover:bg-white hover:text-black' : 'hover:bg-black hober:text-white'}`}
           onClick={() => handleCGClick()}
         >
           Crypto-Go
         </span>
-        <span className="ml-2">
+        <span className={`ml-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>
           {formattedDay}, {formattedTime}
         </span>
       </div>
@@ -67,7 +69,7 @@ function Navbar() {
     {tickerData.map((coin) => (
       <span
         key={coin.id}
-        className={`ticker-item ${
+        className={`ticker-item bg-black ${
           coin.change < 0 ? "text-red-500" : "text-green-500"
         }`}
       >
@@ -82,9 +84,9 @@ function Navbar() {
 </div>
 
       <div className="flex items-center">
-        <div className="mr-2">Light</div>
+        <div className={`mr-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>Light</div>
         <Slider />
-        <div className="ml-2">Dark</div>
+        <div className={`ml-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>Dark</div>
       </div>
     </div>
   );
