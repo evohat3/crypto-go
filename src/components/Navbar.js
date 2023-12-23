@@ -51,16 +51,20 @@ function Navbar() {
   // console.log(tickerData);
   return (
     <div className={`text-white h-12 fixed top-0 w-full p-4 flex items-center justify-between z-10 border-b-2 ${isDarkMode ? 'bg-gray-800 border-white' : 'bg-white border-black'}`} >
-      <div className="flex-1">
+      <div className="grid grid-cols-3 w-half">
         <span
-          className={`rounded-full p-2 border-2 bg-blue-400 ${isDarkMode ? 'border-white hover:bg-white hover:text-black' : 'border-black hover:bg-black hover:text-white'}`}
+          className={`col-span-1 rounded-full p-2 border-2 bg-blue-400 text-center ${isDarkMode ? 'border-white hover:bg-white hover:text-black' : 'border-black hover:bg-black hover:text-white'}`}
           onClick={() => handleCGClick()}
         >
           Crypto-Go
         </span>
-        <span className={`ml-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>
+        <span className={`col-span-1 ml-2 text-center ${isDarkMode ? 'text-white' : 'text-black'}`}>
           {formattedDay}, {formattedTime}
         </span>
+        <div className={`col-span-1 flex items-center group ${isDarkMode ? 'bg-white text-black' : 'bg-slate-600 text-white'} rounded-full p-2`}>
+          <input className={`w-full bg-transparent outline-none ${isDarkMode ? 'text-black' : 'text-white'}`} placeholder="Search" />
+          <span className={`ml-2 group-hover:cursor-pointer group-hover:text-white ${isDarkMode ? 'group-hover:bg-black' : 'group-hover:bg-white'}`}>&#128269;</span> {/* Magnifying glass symbol */}
+        </div>
       </div>
 
 {/* Scrolling stock ticker container */}
