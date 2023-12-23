@@ -50,7 +50,7 @@ function Navbar() {
 
   // console.log(tickerData);
   return (
-    <div className={`text-white h-12 fixed top-0 w-full p-4 flex items-center justify-between z-10 border-b-2 ${isDarkMode ? 'bg-gray-800 border-white' : 'bg-white border-black'}`} >
+    <div className={`text-white h-12 fixed top-0 w-full p-4 flex items-center justify-between z-10 border-b-2 overflow-hidden ${isDarkMode ? 'bg-gray-800 border-white' : 'bg-white border-black'}`} >
       <div className="grid grid-cols-3 w-half">
         <span
           className={`col-span-1 rounded-full p-2 border-2 bg-blue-400 text-center ${isDarkMode ? 'border-white hover:bg-white hover:text-black' : 'border-black hover:bg-black hover:text-white'}`}
