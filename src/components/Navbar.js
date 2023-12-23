@@ -53,7 +53,7 @@ function Navbar() {
     <div className={`text-white h-12 fixed top-0 w-full p-4 flex items-center justify-between z-10 border-b-2 ${isDarkMode ? 'bg-gray-800 border-white' : 'bg-white border-black'}`} >
       <div className="flex-1">
         <span
-          className={`rounded-full p-2 border-4 ${isDarkMode ? 'border-white hover:bg-white hover:text-black' : 'bg-blue-400 border-black hover:bg-black hover:text-white'}`}
+          className={`rounded-full p-2 border-2 bg-blue-400 ${isDarkMode ? 'border-white hover:bg-white hover:text-black' : 'border-black hover:bg-black hover:text-white'}`}
           onClick={() => handleCGClick()}
         >
           Crypto-Go
@@ -69,7 +69,7 @@ function Navbar() {
     {tickerData.map((coin) => (
       <span
         key={coin.id}
-        className={`ticker-item bg-black ${
+        className={`ticker-item  ${
           coin.change < 0 ? "text-red-500" : "text-green-500"
         }`}
       >
@@ -83,10 +83,10 @@ function Navbar() {
   </Marquee>
 </div>
 
-      <div className="flex items-center">
-        <div className={`mr-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>Light</div>
+      <div className={`flex items-center p-2 rounded-full border-2 ${isDarkMode ? ' bg-white ' : 'bg-black'} `}>
+        <div className={`mr-2 p-2 font-bold ${isDarkMode ? 'text-black' : 'text-white'}`}>Light</div>
         <Slider />
-        <div className={`ml-2 ${isDarkMode ? 'text-white' : 'text-black'}`}>Dark</div>
+        <div className={`ml-2 p-2 font-bold ${isDarkMode ? 'text-black' : 'text-white'}`}>Dark</div>
       </div>
     </div>
   );
