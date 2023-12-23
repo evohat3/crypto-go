@@ -50,10 +50,10 @@ function Navbar() {
 
   // console.log(tickerData);
   return (
-    <div className={`text-white h-12 fixed top-0 w-full p-4 flex items-center justify-between z-10 ${isDarkMode ? 'bg-gray-800' : 'bg-white border-b-black border-2'}`} >
+    <div className={`text-white h-12 fixed top-0 w-full p-4 flex items-center justify-between z-10 border-b-2 ${isDarkMode ? 'bg-gray-800 border-white' : 'bg-white border-black'}`} >
       <div className="flex-1">
         <span
-          className={`bg-blue-500 rounded-full p-2 border-2 border-white text-white ${isDarkMode ? 'hover:bg-white hover:text-black' : 'hover:bg-black hober:text-white'}`}
+          className={`rounded-full p-2 border-4 ${isDarkMode ? 'border-white hover:bg-white hover:text-black' : 'bg-blue-400 border-black hover:bg-black hover:text-white'}`}
           onClick={() => handleCGClick()}
         >
           Crypto-Go

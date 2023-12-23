@@ -210,22 +210,22 @@ return (
             alt={`${coinDetails.name} icon`}
             className={`sm:w-6 sm:h-6 md:w-12 md:h-12 lg:w-16 lg:h-16 xl:w-20 xl:h-20 border-4 rounded-full ${isDarkMode ? 'bg-white' : 'bg-black border-black'}`}
           />
-          <h2 className={`text-base p-4 sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold rounded-full p-2 m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'}`}>
+          <h2 className={`text-base p-4 sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold rounded-full m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'}`}>
             {coinDetails.name}
           </h2>
-          <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'}`}>
+          <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-4 m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'}`}>
              <span className="font-bold">Symbol:</span> {coinDetails.symbol}
           </p>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2">
+          <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-4 m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'}`}>
           <span className="font-bold">Current Price:</span> ${Number(coinDetails.price).toLocaleString()}
           </p>
-        <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2 ${
+        <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-4 m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'} ${
             coinDetails.change < 0 ? "text-red-500" : "text-green-500"
           }`}>
           <span className="font-bold text">Change:</span> {" "}
   {coinDetails.change > 0 ? "+" : ""}{coinDetails.change}%
           </p>
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-2 m-2">
+          <p className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-4 m-2 ${isDarkMode ? 'bg-black' : 'bg-white text-black'}`}>
           <span className="font-bold">All Time High:</span> ${Number(coinDetails.allTimeHigh.price).toLocaleString()}
           </p>
         </div>
