@@ -22,6 +22,7 @@ export default function Search() {
   const [error, setError] = useState(null);
   const { isDarkMode } = useTheme();
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -114,6 +115,11 @@ export default function Search() {
     ],
   };
 
+  const range = Math.max(...dataValues) - Math.min(...dataValues);
+  const percentBuffer = range * 0.05; // Adjust this value as needed
+  const minBuffer = 0.01; // Adjust this value as needed
+  const buffer = Math.max(percentBuffer, minBuffer);
+
   const options = {
     responsive: true, // Enable responsiveness
     maintainAspectRatio: false, // Do not maintain aspect ratio
@@ -140,10 +146,14 @@ export default function Search() {
             size: 12,
           },
         },
+        grid: {
+          color: 'rgba(128, 128, 128, 0.5)'
+        }
+        
       },
       y: {
-        min: Math.min(...dataValues) - dataValues,
-        max: Math.max(...dataValues) + dataValues ,
+        min: Math.min(...dataValues) - buffer,
+        max: Math.max(...dataValues) + buffer,
         title: {
           display: true,
           text: "Price",
@@ -161,6 +171,9 @@ export default function Search() {
           },
           callback: (value, index, values) => `$${value.toLocaleString()}`,
         },
+        grid: {
+          color: 'rgba(128, 128, 128, 0.5)'
+        }
       },
     },
   };
