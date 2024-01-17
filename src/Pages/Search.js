@@ -73,7 +73,7 @@ export default function Search() {
     };
 
     fetchData();
-  }, [coinDetails, id]);
+  }, [id]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -178,9 +178,11 @@ export default function Search() {
     },
   };
 
+  // console.log(coinDetails);
+
   return (
     <div
-      className={`h-screen flex flex-col ${
+      className={`min-h-screen flex flex-col ${
         isDarkMode ? "bg-black" : "bg-white"
       }`}
     >
@@ -201,29 +203,40 @@ export default function Search() {
       {/* Boxes container */}
       <div className="flex flex-col sm:flex-row justify-center mt-2 mr-4 ml-4 space-x-0 sm:space-x-4 space-y-4 sm:space-y-0">
   {/* First Box */}
-  <div className="w-full sm:w-1/2 shadow-md rounded-lg overflow-hidden ">
+  <div className={`mt-8 sm:mt-2 w-full sm:w-1/2 min-h-[300px] sm:min-h-[200px] shadow-md rounded-lg overflow-hidden border-2 border-black ${isDarkMode ? 'bg-slate-200' : 'bg-black text-white'}`}>
     <div className="px-4 py-2">
-      <h1 className="flex items-center text-gray-900 font-bold text-3xl ">{coinDetails.name} 
+      <h1 className="flex items-center  font-bold text-4xl ">{coinDetails.name} 
       <img className="h-12 w-12 object-cover mt-2" src={coinDetails.iconUrl} alt={coinDetails.name} />
       </h1>
-      <p className="mt-1 text-gray-600 text-sm">This is an example of a card.</p>
+      <p className="mt-1 p-2 text-lg">Ticker: {coinDetails.symbol}</p>
+      <p className="mt-1 p-2 text-lg">Current Price: ${Number(coinDetails.price).toLocaleString()}</p>
+      <p className={`mt-1 p-2 text-lg rounded-full w-1/2 ${coinDetails.change < 0 ? 'bg-red-500' : 'bg-green-500'}`}>Change: {coinDetails.change < 0 ? '' : '+' }{coinDetails.change}%</p>
+      <p className="mt-1 p-2 text-lg">All Time High: ${Number(coinDetails.allTimeHigh.price).toLocaleString()}</p>
+      <p className="mt-1 p-2 text-lg">Circulating Supply: {Number(coinDetails.supply.circulating).toLocaleString()}</p>
     </div>
-    <img className="h-56 w-full object-cover mt-2" src="https://source.unsplash.com/random" alt="Card 1"/>
+    
     <div className="px-4 py-2 mt-2">
       {/* Rest of your code */}
     </div>
   </div>
 
   {/* Second Box */}
-  <div className="w-full sm:w-1/2 bg-white shadow-md rounded-lg overflow-hidden">
-    <div className="px-4 py-2">
-      <h1 className="text-gray-900 font-bold text-3xl">Card 2</h1>
-      <p className="mt-1 text-gray-600 text-sm">This is another example of a card.</p>
+  <div className={`w-full sm:w-1/2  shadow-md rounded-lg overflow-hidden border-2 border-black ${isDarkMode ? 'bg-slate-200' : 'bg-black text-white'}`}>
+    <div className="px-4 py-2 text-center">
+      <p className="text-2xl font-bold border-black border-2">What is {coinDetails.name}?</p>
+      <p className="mt-1 p-2 font-bold" style={{ whiteSpace: 'pre-line' }}>{coinDetails.description}</p>
     </div>
-    <img className="h-56 w-full object-cover mt-2" src="https://source.unsplash.com/random" alt="Card 2"/>
-    <div className="px-4 py-2 mt-2">
-      {/* Rest of your code */}
+    <div className="px-4 py-2 mt-2 text-center">
+      More Information at:
     </div>
+
+    <a href={`${coinDetails.websiteUrl}`} className="text-center">
+      
+      <div className={` ml-20 mr-20 ${isDarkMode ? 'bg-black text-white hover:bg-sky-500 hover:text-black' : 'bg-slate-200 text-black hover:bg-sky-500 hover:text-black'}`}>{coinDetails.websiteUrl}</div>
+      
+      
+      </a>
+ 
   </div>
   </div>
 

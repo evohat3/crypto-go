@@ -69,14 +69,14 @@ function Home() {
           >
             <div
               className={`truncate text-base ${
-                coin.change < 0 ? "bg-red-500" : "bg-green-500"
+                coin.change < 0 ? "bg-red-500" : "bg-[#31FF05]"
               } border-4 ${isDarkMode ? 'border-white' : 'border-black'} rounded-full`}
             >
               <span
                 className={`block p-4 bg-black text-center ${
                   coin.change < 0
                     ? "text-red-500 hover:bg-red-500 hover:text-black hover:border-b-4 border-black"
-                    : "text-green-500 hover:bg-green-500 hover:text-black hover:border-b-4 border-black"
+                    : "text-[#31FF05] hover:bg-[#31FF05] hover:text-black hover:border-b-4 border-black"
                 } text-lg`}
               >
                 <span className="font-bold">{coin.symbol}</span>

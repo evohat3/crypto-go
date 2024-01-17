@@ -60,7 +60,7 @@ function Navbar() {
   </div>
 
   {/* Time display */}
-  <div className={` font-bold ${isDarkMode ? 'text-white' : 'text-black' }`}>{formattedDay}, {formattedTime}</div>
+  <div className={` font-bold text-2xl ${isDarkMode ? 'text-white' : 'text-black' }`}>{formattedDay}, {formattedTime}</div>
 
 {/* Search Bar */}
   <div> <div className={`col-span-1 flex items-center group ${isDarkMode ? 'bg-white text-black' : 'bg-slate-600 text-white'} rounded-full p-2`}>
@@ -82,16 +82,16 @@ function Navbar() {
 </nav>
 
 {/* Ticker */}
-<div className={`w-full border-4 ${isDarkMode ? 'border-white' : 'border-black'}`}>
-  <Marquee className={`${isDarkMode ? 'bg-white' : 'bg-black'}`}>
+<div className={`w-full h-16 bg-black ${isDarkMode ? 'border-2 border-white' : ''}`} >
+  <Marquee >
     {tickerData.map((coin) => (
       <span
-        key={coin.id}
-        className={`ticker-item  ${
-          coin.change < 0 ? "text-red-500" : "text-green-500"
-        }`}
+        key={coin.uuid}
+        className={`ticker-item text-2xl font-semibold ${
+          coin.change < 0 ? "text-red-500" : "text-[#31FF05]"
+        }`} style={{lineHeight: "4rem" }} 
       >
-        &nbsp;{coin.symbol}&nbsp;$
+        &nbsp;{coin.symbol}&nbsp;{coin.change}%&nbsp;$
         {parseFloat(coin.price).toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
