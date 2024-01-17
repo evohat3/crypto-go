@@ -30,7 +30,7 @@ export default function Search() {
         setCoinDetails(data);
 
         const coinHistData = await fetchCoinHistory(id);
-        // console.log('coin Hist Data',coinHistData[0])
+
 
         const formattedData = coinHistData.map((entry) => {
           const price = Number(entry.price).toLocaleString("en-US", {
@@ -73,7 +73,7 @@ export default function Search() {
     };
 
     fetchData();
-  }, [id]);
+  }, [coinDetails, id]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -188,7 +188,7 @@ export default function Search() {
         {/* Chart box */}
         <div className="position-relative">
           <div
-            className={` sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full overflow-y-auto border-b-4 ${
+            className={` sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full  border-b-4 ${
               isDarkMode ? "border-white" : "border-black"
             }`}
             style={{ height: "50vh", width: "100vw" }}
@@ -199,96 +199,36 @@ export default function Search() {
       </div>
 
       {/* Boxes container */}
-      <div className="flex justify-center mt-1 mr-4 ml-4 space-x-1">
-        {/* First Box */}
-        <div className="w-full">
-          <div
-            className={`text-white border-4 sm:p-8 md:p-10 lg:p-12 xl:p-16 w-full items-center justify-center animate__animated animate__backInRight ${
-              coinDetails.change < 0 ? "bg-red-500" : "bg-green-500"
-            } ${
-              isDarkMode
-                ? "border-white  text-white"
-                : "border-black text-black"
-            }`}
-          >
-            <h2
-              className={`text-base p-4 flex items-center justify-between sm:text-sm md:text-md lg:text-2xl xl:text-3xl font-bold rounded-full m-2 ${
-                isDarkMode ? "bg-black" : "bg-white text-black"
-              }`}
-            >
-              {coinDetails.name}
-              <span className="float-right">
-                <img
-                  src={coinDetails.iconUrl}
-                  alt={`${coinDetails.name} icon`}
-                  className={`w-12 h-12 border-4 rounded-full ${
-                    isDarkMode ? "bg-white" : "bg-black border-black"
-                  }`}
-                />
-              </span>
-            </h2>
-            <p
-              className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-4 m-2 ${
-                isDarkMode ? "bg-black" : "bg-white text-black"
-              }`}
-            >
-              <span className="font-bold">Symbol:</span> {coinDetails.symbol}
-            </p>
-            <p
-              className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-4 m-2 ${
-                isDarkMode ? "bg-black" : "bg-white text-black"
-              }`}
-            >
-              <span className="font-bold">Current Price:</span> $
-              {Number(coinDetails.price).toLocaleString()}
-            </p>
-            <p
-              className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-4 m-2 ${
-                isDarkMode ? "bg-black" : "bg-white text-black"
-              } ${coinDetails.change < 0 ? "text-red-500" : "text-green-500"}`}
-            >
-              <span className="font-bold text">Change:</span>{" "}
-              {coinDetails.change > 0 ? "+" : ""}
-              {coinDetails.change}%
-            </p>
-            <p
-              className={`text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl bg-black rounded-full p-4 m-2 ${
-                isDarkMode ? "bg-black" : "bg-white text-black"
-              }`}
-            >
-              <span className="font-bold">All Time High:</span> $
-              {Number(coinDetails.allTimeHigh.price).toLocaleString()}
-            </p>
-          </div>
-        </div>
+      <div className="flex flex-col sm:flex-row justify-center mt-2 mr-4 ml-4 space-x-0 sm:space-x-4 space-y-4 sm:space-y-0">
+  {/* First Box */}
+  <div className="w-full sm:w-1/2 shadow-md rounded-lg overflow-hidden ">
+    <div className="px-4 py-2">
+      <h1 className="flex items-center text-gray-900 font-bold text-3xl ">{coinDetails.name} 
+      <img className="h-12 w-12 object-cover mt-2" src={coinDetails.iconUrl} alt={coinDetails.name} />
+      </h1>
+      <p className="mt-1 text-gray-600 text-sm">This is an example of a card.</p>
+    </div>
+    <img className="h-56 w-full object-cover mt-2" src="https://source.unsplash.com/random" alt="Card 1"/>
+    <div className="px-4 py-2 mt-2">
+      {/* Rest of your code */}
+    </div>
+  </div>
 
-        {/* Second Box */}
-        <div
-          className="text-white border-4 p-6 sm:p-8 md:p-10 lg:p-12 xl:p-16 bg-slate-700 whitespace-normal text-center  animate__animated animate__backInLeft"
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl">
-            {coinDetails.description}
-          </p>
-          {/* box inside second box*/}
-          <div
-            className="border-4 hover:bg-white hover:text-black p-4 m-4 w-1/2border-4 hover:bg-white hover:text-black p-4 m-4 w-1/2"
-            onClick={() => (window.location.href = coinDetails.websiteUrl)}
-          >
-            <p className="p-4 ">More Information at:</p>
-            <a
-              className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-center underline text-blue-400 hover:text-blue-600 hover:underline whitespace-normal"
-              href={coinDetails.websiteUrl}
-            >
-              {coinDetails.websiteUrl}
-            </a>
-          </div>
-        </div>
-      </div>
+  {/* Second Box */}
+  <div className="w-full sm:w-1/2 bg-white shadow-md rounded-lg overflow-hidden">
+    <div className="px-4 py-2">
+      <h1 className="text-gray-900 font-bold text-3xl">Card 2</h1>
+      <p className="mt-1 text-gray-600 text-sm">This is another example of a card.</p>
+    </div>
+    <img className="h-56 w-full object-cover mt-2" src="https://source.unsplash.com/random" alt="Card 2"/>
+    <div className="px-4 py-2 mt-2">
+      {/* Rest of your code */}
+    </div>
+  </div>
+  </div>
+
+
+
     </div>
   );
 }
