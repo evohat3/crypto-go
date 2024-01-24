@@ -52,8 +52,10 @@ const fetchCoinDetails = async (id) => {
     }
   };
 
-  const fetchCoins = async () => {
-    const url = 'https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0';
+  const fetchCoins = async (data) => {
+    const url = data ? `https://coinranking1.p.rapidapi.com/coins?timePeriod=24h&orderBy=marketCap&search=${data}&orderDirection=desc&limit=1&offset=0` : 'https://coinranking1.p.rapidapi.com/coins?&timePeriod=24h&orderBy=marketCap&orderDirection=desc&limit=50&offset=0';
+
+                
   
     const options = {
       method: 'GET',

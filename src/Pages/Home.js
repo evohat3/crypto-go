@@ -1,61 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import '../utils/Home.css'
 import { useTheme } from "../utils/ThemeContext";
 
-function Home() {
-  const [coins, setCoins] = useState([]);
-  const [loading, setLoading] = useState(true);
+function Home({ coins, setCoinUuid }) {
+
   const { isDarkMode } = useTheme();
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiKey = process.env.REACT_APP_API_KEY;
-        const url =
-          "https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=100&offset=0";
-
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            "X-RapidAPI-Key": apiKey,
-            "X-RapidAPI-Host": "coinranking1.p.rapidapi.com",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        const result = await response.json();
-        const coinData = result.data.coins || [];
-
-        setCoins(coinData);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+ 
 
   const handleCoinClick = (coinSymbol) => {
     // Navigate to the /:id route with the symbol as the parameter
     navigate(`/${coinSymbol}`);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  const setCoinid = (coinUuid) => { 
+    setCoinUuid(coinUuid);
   }
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
+ 
 
   return (
     <div className={`p-8 bg-black ${isDarkMode ? 'bg-black' : 'bg-white'}`}>
@@ -65,7 +30,9 @@ function Home() {
           <div
             key={coin.uuid}
             className={`border-4 p-2 sm:p-1 md:p-2 rounded-full hover:bg-yellow-400 ${isDarkMode ? 'border-white' : 'border-black'}`}
-            onClick={() => handleCoinClick(coin.uuid)}
+            onClick={() => {
+              handleCoinClick(coin.uuid);
+              setCoinid(coin.uuid);}}
           >
             <div
               className={`truncate text-base ${

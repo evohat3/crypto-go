@@ -4,7 +4,7 @@ import Marquee from "react-fast-marquee"; // Import the marquee library or use y
 import { fetchCoins } from "../utils/Api";
 import { useTheme } from '../utils/ThemeContext';
 
-function Navbar() {
+function Navbar({ setSearchTerm, coinUuid }) {
   const { isDarkMode } = useTheme();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [tickerData, setTickerData] = useState([]);
@@ -17,6 +17,10 @@ function Navbar() {
 
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value); // Update state when search bar's value changes
+  }
 
   const formattedDay = currentDateTime.toLocaleDateString(undefined, {
     weekday: "long",
@@ -44,6 +48,7 @@ function Navbar() {
     fetchData();
   }, []);
 
+
   // console.log(tickerData);
   return (
     <>
@@ -63,9 +68,9 @@ function Navbar() {
   <div className={` font-bold text-2xl ${isDarkMode ? 'text-white' : 'text-black' }`}>{formattedDay}, {formattedTime}</div>
 
 {/* Search Bar */}
-  <div> <div className={`col-span-1 flex items-center group ${isDarkMode ? 'bg-white text-black' : 'bg-slate-600 text-white'} rounded-full p-2`}>
+  <div className={coinUuid !== '' ? 'hidden' : ''}> <div type="text" onChange={handleSearchChange} className={`col-span-1 flex items-center group ${isDarkMode ? 'bg-white text-black' : 'bg-slate-600 text-white'} rounded-full p-2`}>
           <input className={`w-full bg-transparent outline-none ${isDarkMode ? 'text-black' : 'text-white'}`} placeholder="Search" />
-          <span className={`ml-2 group-hover:cursor-pointer group-hover:text-white ${isDarkMode ? 'group-hover:bg-black' : 'group-hover:bg-white'}`}>&#128269;</span> {/* Magnifying glass symbol */}
+          <span className={`ml-2 group-hover:cursor-pointer group-hover:text-white rounded-full ${isDarkMode ? 'group-hover:bg-slate-600' : 'group-hover:bg-slate-200'}`}>&#128269;</span> {/* Magnifying glass symbol */}
         </div></div>
     
 {/* Slider */}
