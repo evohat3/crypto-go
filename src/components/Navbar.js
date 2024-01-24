@@ -3,13 +3,15 @@ import { useState, useEffect } from "react";
 import Marquee from "react-fast-marquee"; // Import the marquee library or use your preferred solution
 import { fetchCoins } from "../utils/Api";
 import { useTheme } from '../utils/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
-function Navbar({ setSearchTerm, coinUuid }) {
+
+function Navbar({ setSearchTerm, uuid}) {
   const { isDarkMode } = useTheme();
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [tickerData, setTickerData] = useState([]);
-
-
+ 
+  const navigate = useNavigate();
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentDateTime(new Date());
@@ -17,10 +19,16 @@ function Navbar({ setSearchTerm, coinUuid }) {
 
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
+  
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value); // Update state when search bar's value changes
   }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    navigate(`/${uuid}`);
+  };
 
   const formattedDay = currentDateTime.toLocaleDateString(undefined, {
     weekday: "long",
@@ -30,6 +38,8 @@ function Navbar({ setSearchTerm, coinUuid }) {
     hour: "numeric",
     minute: "numeric",
   });
+
+
 
 
   const fetchData = async () => {
@@ -68,10 +78,16 @@ function Navbar({ setSearchTerm, coinUuid }) {
   <div className={` font-bold text-2xl ${isDarkMode ? 'text-white' : 'text-black' }`}>{formattedDay}, {formattedTime}</div>
 
 {/* Search Bar */}
-  <div className={coinUuid !== '' ? 'hidden' : ''}> <div type="text" onChange={handleSearchChange} className={`col-span-1 flex items-center group ${isDarkMode ? 'bg-white text-black' : 'bg-slate-600 text-white'} rounded-full p-2`}>
-          <input className={`w-full bg-transparent outline-none ${isDarkMode ? 'text-black' : 'text-white'}`} placeholder="Search" />
-          <span className={`ml-2 group-hover:cursor-pointer group-hover:text-white rounded-full ${isDarkMode ? 'group-hover:bg-slate-600' : 'group-hover:bg-slate-200'}`}>&#128269;</span> {/* Magnifying glass symbol */}
-        </div></div>
+<form onSubmit={handleSubmit}>
+  <div className={`col-span-1 flex items-center group ${isDarkMode ? 'bg-white text-black' : 'bg-slate-600 text-white'} rounded-full p-2`}>
+    <input 
+      onChange={handleSearchChange} 
+      className={`w-full bg-transparent outline-none ${isDarkMode ? 'text-black' : 'text-white'}`} 
+      placeholder="Search" 
+    />
+    <button type="submit" className={`ml-2 group-hover:cursor-pointer group-hover:text-white rounded-full ${isDarkMode ? 'group-hover:bg-slate-600' : 'group-hover:bg-slate-200'}`}>&#128269;</button> {/* Magnifying glass symbol */}
+  </div>
+</form>
     
 {/* Slider */}
 <div className="">

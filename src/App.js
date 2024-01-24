@@ -14,7 +14,10 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [coinUuid, setCoinUuid] = useState('');
+  const [uuid, setUuid] = useState('');
 
+
+  
 
   // Debounce the search term so that we don't make a request for every keystroke
   useEffect(() => {
@@ -36,6 +39,9 @@ function App() {
         const coins = coinData.data.coins;
         setCoins(coins);
         setLoading(false);
+        if (coins.length === 1) {
+          setUuid(coins[0].uuid);
+        }
       } catch (error) {
         setError(error);
         setLoading(false);
@@ -57,7 +63,7 @@ function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
-        <Navbar setSearchTerm={setSearchTerm} coinUuid={coinUuid} />
+        <Navbar setSearchTerm={setSearchTerm} coinUuid={coinUuid} uuid={uuid}/>
         <Routes>
           <Route index element={<Home coins={coins} searchTerm={searchTerm} setCoinUuid={setCoinUuid} />} />
           <Route path="/:id" element={<Search />} />
