@@ -15,6 +15,7 @@ function App() {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [coinUuid, setCoinUuid] = useState('');
   const [uuid, setUuid] = useState('');
+  const [timeFrame, setTimeFrame] = useState('24h');
 
 
   
@@ -66,7 +67,7 @@ function App() {
         <Navbar setSearchTerm={setSearchTerm} coinUuid={coinUuid} uuid={uuid}/>
         <Routes>
           <Route index element={<Home coins={coins} searchTerm={searchTerm} setCoinUuid={setCoinUuid} />} />
-          <Route path="/:id" element={<Search />} />
+          <Route path="/:id" element={<Search setTimeFrame={setTimeFrame} timeFrame={timeFrame}/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

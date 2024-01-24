@@ -25,10 +25,12 @@ const fetchCoinDetails = async (id) => {
   };
 
 
-  const fetchCoinHistory = async (id) => {
+  const fetchCoinHistory = async (id,timeframe = '24h') => {
     try {
       const apiKey = process.env.REACT_APP_API_KEY;
-      const url = `https://coinranking1.p.rapidapi.com/coin/${id}/history?timePeriod=24h`;
+      const url = timeframe ? `https://coinranking1.p.rapidapi.com/coin/${id}/history?timePeriod=${timeframe}` : `https://coinranking1.p.rapidapi.com/coin/${id}/history?timePeriod=24h`;
+      // console.log('fetch Coin History', url)
+      // console.log('id', id)
   
       const response = await fetch(url, {
         method: 'GET',
@@ -46,15 +48,24 @@ const fetchCoinDetails = async (id) => {
   
       const coinHist = result.data?.history || {};
 
-      return coinHist;
+      const change = result.data?.change || {};
+
+   
+
+      
+
+      return {coinHist, change};
     } catch (error) {
       throw error;
     }
   };
 
-  const fetchCoins = async (data) => {
-    const url = data ? `https://coinranking1.p.rapidapi.com/coins?timePeriod=24h&orderBy=marketCap&search=${data}&orderDirection=desc&limit=1&offset=0` : 'https://coinranking1.p.rapidapi.com/coins?&timePeriod=24h&orderBy=marketCap&orderDirection=desc&limit=50&offset=0';
+  
 
+  const fetchCoins = async (data) => {
+    const url = data ? `https://coinranking1.p.rapidapi.com/coins?timePeriod=24h&orderBy=marketCap&search=${data}&orderDirection=desc&limit=1&offset=0` : `https://coinranking1.p.rapidapi.com/coins?&timePeriod=24h&orderBy=marketCap&orderDirection=desc&limit=50&offset=0`;
+
+    // console.log('fetch coins called' , url)
                 
   
     const options = {

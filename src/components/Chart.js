@@ -2,6 +2,8 @@ import React from 'react';
 import { Line } from 'react-chartjs-2';
 
 
+//TODO Create a button group 
+
 const CoinPriceChart = ({ coinData }) => {
     // Extract timestamps and prices from your data
     const timestamps = coinData.map(entry => entry.timestamp);

@@ -20,26 +20,38 @@ export default function Search() {
   const [coinHistory, setCoinHistory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [timeFrame, setTimeFrame] = useState(''); // Add this line
   const { isDarkMode } = useTheme();
+
+  const handleTimeFrame = (timeFrame) => {
+    // console.log(timeFrame);
+    setTimeFrame(timeFrame);
+  };
+
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await fetchCoinDetails(id);
+        const data = await fetchCoinDetails(id, timeFrame);
         setCoinDetails(data);
 
-        const coinHistData = await fetchCoinHistory(id);
+        const coinHistData = await fetchCoinHistory(id, timeFrame);
+
+        const change = coinHistData.change;
+        
 
 
-        const formattedData = coinHistData.map((entry) => {
+        const formattedData = coinHistData.coinHist.map((entry) => {
           const price = Number(entry.price).toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
           });
+          
 
           // Convert timestamp to Date object
           const date = new Date(entry.timestamp * 1000);
+          // console.log(date)
 
           // Round down to the nearest hour
           date.setMinutes(0, 0, 0);
@@ -49,9 +61,12 @@ export default function Search() {
             { timeZone: "America/New_York" }
           );
 
+          // console.log(timestamp)
+
           return {
             price,
             timestamp,
+            change
           };
         });
 
@@ -63,6 +78,7 @@ export default function Search() {
 
           return currentHour !== previousHour;
         });
+        
 
         setCoinHistory(hourlyData);
         setLoading(false);
@@ -73,7 +89,7 @@ export default function Search() {
     };
 
     fetchData();
-  }, [id]);
+  }, [id, timeFrame]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -83,33 +99,88 @@ export default function Search() {
     return <div>Error: {error.message}</div>;
   }
 
-  const hourLabels = coinHistory.map((entry) => {
+  const timeLabels = coinHistory.map((entry) => {
     const timestamp = new Date(entry.timestamp);
-    const options = { hour: "numeric", hour12: true };
-    const formattedHour = new Intl.DateTimeFormat("en-US", options).format(
-      timestamp
-    );
-
-    return formattedHour;
+    let options;
+  
+    switch (timeFrame) {
+      case '3h':
+      case '24h':
+        options = { hour: 'numeric', hour12: true };
+        break;
+      case '7d':
+      case '30d':
+        options = { day: 'numeric', month: 'short' };
+        break;
+      case '3m':
+        options = { month: 'short', year: 'numeric' };
+        break;
+      case '1yr':
+        options = { month: 'short', year: 'numeric' };
+        break;
+      case '5yr':
+        options = { year: 'numeric' };
+        break;
+      default:
+        options = {};
+    }
+  
+    const formattedTime = new Intl.DateTimeFormat('en-US', options).format(timestamp);
+  
+    return formattedTime;
   });
 
   const dataValues = coinHistory.map((entry) =>
     parseFloat(entry.price.replace("$", "").replace(",", ""))
   );
 
+  // const dayData = coinHistory.filter((_, index) => index % 24 === 0);
+  // // const lastSevenDaysData = dayData.slice(-7);
+
+  // const dayLabels = dayData.map((entry) => {
+  //   const timestamp = new Date(entry.timestamp);
+  //   const options = { weekday: "short", hour12: true };
+  //   const formattedDay = new Intl.DateTimeFormat("en-US", options).format(
+  //     timestamp
+  //   );
+  //   return formattedDay
+  // });
+
+  // // console.log('day labels:', dayLabels)
+
+  // const monthData = coinHistory.filter((_, index) => index % 30 === 0);
+  // const monthLabels = monthData.map((entry) => {
+  //   const timestamp = new Date(entry.timestamp);
+  //   const options = { month: 'long', year: 'numeric' };
+  //   const formattedMonth = new Intl.DateTimeFormat('en-US', options).format(timestamp);
+  //   return formattedMonth;
+  // });
+
+  // console.log('month labels:', monthLabels)
+
+
+
+  
+
   // Reverse the arrays
-  const reversedHourLabels = [...hourLabels].reverse();
+  const reversedTimeLabels = [...timeLabels].reverse();
   const reversedDataValues = [...dataValues].reverse();
+  // const reversedMonthLabels = [...monthLabels].reverse();
+  // const reversedDayLabels = [...dayLabels].reverse();
+
+// console.log('reversed month labels:',reversedMonthLabels)
+  // console.log('reversed hour labels:',reversedHourLabels)
+  // console.log('reversed time labels:',reversedTimeLabels)
 
   const data = {
-    labels: reversedHourLabels,
+    labels: reversedTimeLabels,
     datasets: [
       {
         label: "Coin Price History",
         data: reversedDataValues,
-        backgroundColor: isDarkMode ? "white" : "black",
-        borderColor: coinDetails.change < 0 ? "red" : "green",
-        pointBorderColor: "black",
+        // backgroundColor: isDarkMode ? "white" : "black",
+        borderColor: coinHistory[0].change < 0 ? "red" : "green",
+        pointBorderColor: "rgba(0, 0, 0, 0)",
         fill: true,
       },
     ],
@@ -195,6 +266,18 @@ export default function Search() {
             }`}
             style={{ height: "50vh", width: "100vw" }}
           >
+
+     {/* Button group */}
+    <div className="float-right md:space-x-3">
+    <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('3h')}>3h</button>
+  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('24h')}>24h</button>
+  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('7d')}>7d</button>
+  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('30d')}>30d</button>
+  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('3m')}>3m</button>
+  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('1y')}>1yr</button>
+  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('5y')}>5yr</button>
+    </div>
+
             {coinHistory && <Line data={data} options={options} />}
           </div>
         </div>
@@ -210,7 +293,7 @@ export default function Search() {
       </h1>
       <p className="mt-1 p-2 text-lg">Ticker: {coinDetails.symbol}</p>
       <p className="mt-1 p-2 text-lg">Current Price: ${Number(coinDetails.price).toLocaleString()}</p>
-      <p className={`mt-1 p-2 text-lg rounded-full w-1/2 ${coinDetails.change < 0 ? 'bg-red-500' : 'bg-green-500'}`}>Change: {coinDetails.change < 0 ? '' : '+' }{coinDetails.change}%</p>
+      <p className={`mt-1 p-2 text-lg rounded-full w-1/2 ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'}`}>{timeFrame} Change: {coinHistory[0].change < 0 ? '' : '+' }{coinHistory[0].change}%</p>
       <p className="mt-1 p-2 text-lg">All Time High: ${Number(coinDetails.allTimeHigh.price).toLocaleString()}</p>
       <p className="mt-1 p-2 text-lg">Circulating Supply: {Number(coinDetails.supply.circulating).toLocaleString()}</p>
     </div>
