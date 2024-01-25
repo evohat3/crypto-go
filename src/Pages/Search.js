@@ -185,6 +185,7 @@ export default function Search() {
       },
     ],
   };
+  console.log(coinHistory[0].change)
 
   const range = Math.max(...dataValues) - Math.min(...dataValues);
   const percentBuffer = range * 0.05; // Adjust this value as needed
@@ -269,13 +270,21 @@ export default function Search() {
 
      {/* Button group */}
     <div className="float-right md:space-x-3">
-    <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('3h')}>3h</button>
-  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('24h')}>24h</button>
-  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('7d')}>7d</button>
-  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('30d')}>30d</button>
-  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('3m')}>3m</button>
-  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('1y')}>1yr</button>
-  <button className="hover:bg-black hover:text-white bg-gray-200 text-gray-800 px-4 py-2 rounded-md transition-colors duration-300" onClick={() => handleTimeFrame('5y')}>5yr</button>
+    <button className={`px-4 py-2 rounded-md transition-colors duration-300 font-bold ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'} ${isDarkMode ? 'hover:bg-slate-200' : 'hover:bg-black hover:text-slate-200'}`} onClick={() => handleTimeFrame('3h')}>3h</button>
+    <button className={`px-4 py-2 rounded-md transition-colors duration-300 font-bold ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'} ${isDarkMode ? 'hover:bg-slate-200' : 'hover:bg-black hover:text-slate-200'}`} onClick={() => handleTimeFrame('24h')}>24h</button>
+    <button className={`px-4 py-2 rounded-md transition-colors duration-300 font-bold ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'} ${isDarkMode ? 'hover:bg-slate-200' : 'hover:bg-black hover:text-slate-200'}`} onClick={() => handleTimeFrame('7d')}>7d</button>
+    <button className={`px-4 py-2 rounded-md transition-colors duration-300 font-bold ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'} ${isDarkMode ? 'hover:bg-slate-200' : 'hover:bg-black hover:text-slate-200'}`} onClick={() => handleTimeFrame('30d')}>30d</button>
+    <button className={`px-4 py-2 rounded-md transition-colors duration-300 font-bold ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'} ${isDarkMode ? 'hover:bg-slate-200' : 'hover:bg-black hover:text-slate-200'}`} onClick={() => handleTimeFrame('3m')}>3m</button>
+    <button className={`px-4 py-2 rounded-md transition-colors duration-300 font-bold ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'} ${isDarkMode ? 'hover:bg-slate-200' : 'hover:bg-black hover:text-slate-200'}`} onClick={() => handleTimeFrame('1y')}>1yr</button>
+    <button className={`px-4 py-2 rounded-md transition-colors duration-300 font-bold ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'} ${isDarkMode ? 'hover:bg-slate-200' : 'hover:bg-black hover:text-slate-200'}`} onClick={() => handleTimeFrame('5y')}>5yr</button>
+    </div>
+
+    <div className={`float-left ${isDarkMode ? 'text-slate-200' : 'text-slate-700'}`}>
+            <div className="text-2xl font-bold ">Price History</div>
+            <div className="">Past {timeFrame} 
+             <span className={`ml-4 `}>Change: <span className={`font-bold ${coinHistory[0].change < 0 ? 'text-red-500' : 'text-green-500'}`}>{coinHistory[0].change < 0 ? '' : '+'}{coinHistory[0].change}%</span> </span>
+            
+            </div>
     </div>
 
             {coinHistory && <Line data={data} options={options} />}
