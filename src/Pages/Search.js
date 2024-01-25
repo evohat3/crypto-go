@@ -302,7 +302,7 @@ export default function Search() {
       </h1>
       <p className="mt-1 p-2 text-lg">Ticker: {coinDetails.symbol}</p>
       <p className="mt-1 p-2 text-lg">Current Price: ${Number(coinDetails.price).toLocaleString()}</p>
-      <p className={`mt-1 p-2 text-lg rounded-full w-1/2 ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'}`}>{timeFrame} Change: {coinHistory[0].change < 0 ? '' : '+' }{coinHistory[0].change}%</p>
+      <p className={`mt-1 p-2 text-lg rounded-full ${coinHistory[0].change < 0 ? 'bg-red-500' : 'bg-green-500'}`}>{timeFrame} Change: {coinHistory[0].change < 0 ? '' : '+' }{coinHistory[0].change}%</p>
       <p className="mt-1 p-2 text-lg">All Time High: ${Number(coinDetails.allTimeHigh.price).toLocaleString()}</p>
       <p className="mt-1 p-2 text-lg">Circulating Supply: {Number(coinDetails.supply.circulating).toLocaleString()}</p>
     </div>
